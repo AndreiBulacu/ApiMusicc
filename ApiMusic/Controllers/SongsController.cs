@@ -1,6 +1,8 @@
-﻿using ApiMusic.Models;
-using Microsoft.AspNetCore.Http;
+﻿using ApiMusic.Data;
+using ApiMusic.Models;
 using Microsoft.AspNetCore.Mvc;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ApiMusic.Controllers
 {
@@ -8,34 +10,51 @@ namespace ApiMusic.Controllers
     [ApiController]
     public class SongsController : ControllerBase
     {
-        private static List<Song> songs = new List<Song>()
+        private ApiDbContext _dbContext;
+        public SongsController(ApiDbContext dbContext)
         {
-            new Song(){Id=0, Title="Willow",Language="English"},
-            new Song(){Id=1, Title="After Glow",Language="English"},
-        };
+            _dbContext = dbContext;
+        }
 
+        // GET: api/<SongsController>
         [HttpGet]
         public IEnumerable<Song> Get()
         {
-            return songs;
+            return _dbContext.Songs;
         }
 
+        // GET api/<SongsController>/5
+        [HttpGet("{id}")]
+        public Song Get(int id)
+        {
+            return _dbContext.Songs.Find(id);
+        }
+
+        // POST api/<SongsController>
         [HttpPost]
-        public void Post ([FromBody]Song song)
+        public void Post([FromBody] Song song)
         {
-            songs.Add(song);
-        } 
-
-        [HttpPut("{id}")]
-        public void Put (int id, [FromBody]Song song)
-        {
-            songs[id] = song;
+            _dbContext.Songs.Add(song);
+            _dbContext.SaveChanges();
         }
 
+        // PUT api/<SongsController>/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] Song songObj)
+        {
+            var song = _dbContext.Songs.Find(id);
+            song.Title = songObj.Title;
+            song.Language = songObj.Language;
+            _dbContext.SaveChanges();
+        }
+
+        // DELETE api/<SongsController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            songs.RemoveAt(id);
+            var song = _dbContext.Songs.Find(id);
+            _dbContext.Songs.Remove(song);
+            _dbContext.SaveChanges();
         }
     }
 }
