@@ -11,6 +11,4 @@ namespace ApiMusic.Data
         }
         public DbSet<Song> Songs { get; set; }
     }
-
-
 }

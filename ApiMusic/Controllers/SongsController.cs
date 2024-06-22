@@ -22,7 +22,8 @@ namespace ApiMusic.Controllers
         public async Task<IActionResult> Get()
         {
             //return _dbContext.Songs;
-            return Ok(await _dbContext.Songs.ToListAsync());
+            var songs = await _dbContext.Songs.ToListAsync();
+            return Ok(songs);
         }
 
         // GET api/<SongsController>/5
