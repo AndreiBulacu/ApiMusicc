@@ -68,7 +68,7 @@ namespace ApiMusic.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var song = await _dbContext.SongsFindAsync(id);
+            var song = await _dbContext.Songs.FindAsync(id);
             if(song == null)
             {
                 return NotFound("No record found against this Id");
