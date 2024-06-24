@@ -30,7 +30,7 @@ namespace ApiMusic.Tests
         {
             // Clear existing records
             _dbContext.Albums.RemoveRange(_dbContext.Albums);
-            _dbContext.Songs.RemoveRange(_dbContext.Songs);
+            //_dbContext.Songs.RemoveRange(_dbContext.Songs);
             _dbContext.SaveChanges();
 
             // Add initial data
